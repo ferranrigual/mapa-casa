@@ -181,6 +181,11 @@ def main():
     fig.tight_layout()
     fig.savefig(out / "plano.svg")
     fig.savefig(out / "plano.png", dpi=150)
+    import json
+    (out / "muros.json").write_text(json.dumps(
+        {"ceiling": round(float(ceil_h), 3),
+         "walls": [{"p1": [round(v, 3) for v in seg(w)[0]], "p2": [round(v, 3) for v in seg(w)[1]],
+                    "len": round(abs(w["b"] - w["a"]), 3)} for w in walls]}, indent=1))
     print(f"Guardado {out}/plano.dxf, plano.svg, plano.png")
 
 
