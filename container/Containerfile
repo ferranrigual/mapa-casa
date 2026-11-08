@@ -55,3 +55,14 @@ RUN pip install --no-cache-dir open3d ezdxf shapely scipy trimesh
 
 WORKDIR /work
 CMD ["bash"]
+
+# fused-ssim y fused-bilagrid detectan la GPU al compilar; en `podman build` no hay GPU
+# y usan una lista fija sin sm_120 (RTX 50xx). Se recompilan forzando la arquitectura.
+RUN for repo in rahul-goel/fused-ssim@328dc9836f513d00c4b5bc38fe30478b4435cbb5 \
+                harry7557558/fused-bilagrid@90f9788e57d3545e3a033c1038bb9986549632fe; do \
+        name=${repo%@*}; sha=${repo#*@}; dir=/src/$(basename $name); \
+        git clone https://github.com/$name.git $dir && git -C $dir checkout $sha && \
+        sed -i 's/"-gencode=arch=compute_89,code=sm_89",/"-gencode=arch=compute_89,code=sm_89", "-gencode=arch=compute_120,code=sm_120",/' $dir/setup.py && \
+        grep -q compute_120 $dir/setup.py && \
+        pip install --no-cache-dir --no-build-isolation --force-reinstall --no-deps $dir || exit 1; \
+    done
