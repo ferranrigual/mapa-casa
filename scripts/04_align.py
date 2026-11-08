@@ -8,7 +8,7 @@
 refs.json:
 {
   "points": {                       # puntos marcados en las imágenes sin distorsión (dense/images)
-    "puerta_sup_der": {"PXL.../00073.jpg": [377, 485], "PXL.../00071.jpg": [718, 512]}
+    "puerta_sup_der": {"<video>/00012.jpg": [x, y], "<video>/00015.jpg": [x, y]}
   },
   "heights":   [{"point": "puerta_sup_der", "m": 2.10}],      # altura real sobre el suelo
   "distances": [{"a": "p1", "b": "p2", "m": 0.80}]            # distancia real entre dos puntos
